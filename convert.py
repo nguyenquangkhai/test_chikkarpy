@@ -15,6 +15,8 @@ def read_raw():
     
   
 def build_sudachi_csv(raw_data: List[List[str]]):
+  # Convert raw CSV to sudachi format 
+  # https://github.com/WorksApplications/SudachiDict/blob/develop/docs/synonyms.md
   def build_sudachi_row(group_count: int, lexeme_id: int, heading: str):
     group_id = f'{group_count:06}'
     predicate = 1
@@ -41,12 +43,14 @@ def build_sudachi_csv(raw_data: List[List[str]]):
           sudachi_row = build_sudachi_row(group_count, lexeme_id, heading)
           sudachi_rows.append(sudachi_row)
       writer.writerows(sudachi_rows)
-      writer.writerow([])
+      writer.writerow([]) # We need separate each group by empty line
     
   
 def build_sudachi_dic():
-    command = "chikkarpy build -i sudachi.csv -o sudachi.dic"
-    subprocess.call(command, shell=True)
+  # Build CSV to dic 
+  # https://github.com/WorksApplications/chikkarpy
+  command = "chikkarpy build -i sudachi.csv -o sudachi.dic"
+  subprocess.call(command, shell=True)
     
 raw_data = read_raw()
 build_sudachi_csv(raw_data)
